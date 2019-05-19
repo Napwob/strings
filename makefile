@@ -1,5 +1,5 @@
 .PHONY:all
-CC = g++
+CC = gсс -std=c99 
 CFLAGS = -Wall
 EXECUTABLE = strings
 
