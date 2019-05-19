@@ -1,10 +1,9 @@
-.PHONY:all
-CC = gсс -std=c99 
-CFLAGS = -Wall
-EXECUTABLE = strings
+string.o: string.c 
+	gcc -std=c99 -I thirdparty -I src -c string.c -o string.o
 
-$(EXECUTABLE): main.o string.o
-	$(CC) $(CFLAGS) -o $(EXECUTABLE) main.o string.o
-main.o: main.c
-	$(CC) $(CFLAGS) -o main.o main.c
+main.o: main.c 
+	gcc -std=c99 -Wall -Werror -c main.c -o main.o
+	
+main: main.o string.o
+	gcc -Wall -Werror main.o string.o -lm -o main
 
