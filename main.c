@@ -3,7 +3,7 @@
 #define MAX_PATH 260
 #define DELIM "."
 
-int sstr(char *string1, char *string2)
+char *sstr(char *string1, const char *string2)
 {
 	char *strptr = string1;
 	int j = 0,i;
@@ -23,9 +23,9 @@ int sstr(char *string1, char *string2)
 		}
 	}
 	if (string2[j] == 0) {
-		return 1;
+		return strptr;
 	} else {
-		return 0;
+		return NULL;
 	}
 }
 
@@ -166,7 +166,7 @@ int check(char* paths)
     {
         return 1;
     }
-    if((checkip(paths)==0) || (checkdom(paths)==0))
+    if((checkip(paths)==1) && (checkdom(paths)==1))
     {
         return 1;
     }
@@ -177,10 +177,10 @@ int checkdom(char* paths)
 {
     char a[]=".ru";
     char a1[]=".com";
-    int i=0;
-    i=i+sstr(paths,a);
-    i=i+sstr(paths,a1);
-    if(i>0) return 0; else return 1;
+    char *i;
+    i=sstr(paths,a);
+    i=sstr(paths,a1);
+    if(i!=NULL) return 0; else return 1;
 }
 
 int checksim(char *paths)
