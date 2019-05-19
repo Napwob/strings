@@ -110,22 +110,23 @@ char* stok(char* str, const char* delim)
     return str;
 }
 
-void input(char *delim, char *paths) {
+void input(char *delim){//, char *paths) {
     char temp[2];
     fputs("delim: ", stdout);
     fgets(temp, 2, stdin);
     *delim = temp[0];
-    fputs("paths: ", stdout);
-    fgets(temp, 2, stdin);
-    fgets(paths, MAX_PATH * 4 + 4, stdin);
+    //fputs("paths: ", stdout);
+    //fgets(temp, 2, stdin);
+    //fgets(paths, MAX_PATH * 4 + 4, stdin);
 }
 
 int procces(char delim,char* paths)
 {
     char piece[MAX_PATH]="";
+    char path[MAX_PATH]="";
     char newpaths[MAX_PATH*4]="";
-    int ipi,ipa,i,j=0,en=0,oldipa=0,np=0;
-    while(1)
+    int ipi,ipa,en=0,oldipa=0,i,j,stand=0;
+    while(en==0)
     {
         for(ipi=0,ipa=oldipa;(paths[ipa]!=delim);++ipi,++ipa)
         {
@@ -135,23 +136,25 @@ int procces(char delim,char* paths)
         oldipa=ipa+1;
         if(check(piece) == 0)
         {
-            printf("%s\n",piece);
-            int ns = (checkhs(piece));
-            for(i = ns,j;piece[i]!='\0'; ++i,++j)
+            int ns=0;
+            ns = checkhs(piece);
+
+            for(i=0,j=ns;piece[i]!='\0';++i,++j)
             {
-                newpaths[j]=piece[i];
-            }
-            for(np;newpaths[np]!='\0'; ++np)
-            {
-                    if(newpaths[np]=='/') newpaths[np]='\\';
+                path[i]=piece[j];
+                if(path[i]=='/') path[i]='\\';
             }
 
-            newpaths[np]=delim;
-            np++;
+            for(i=0,j=stand;path[i]!='\0';++i,++j)
+            {
+                newpaths[j]=path[i];
+            }
+            stand=j;
+            newpaths[stand]='+';
+            stand++;
         }
-
-        if(en>0) break;
     }
+    printf("%c",newpaths[stand-1]);
     output(newpaths);
     return 0;
 }
@@ -280,10 +283,10 @@ void output(char *paths)
 }
 
 int main(int argc, char const *argv[]) {
-    //char *path = malloc(sizeof(char) * MAX_PATH*4);
-    char delim = '+';
+    //char *paths = malloc(sizeof(char) * MAX_PATH*4);
+    char delim='+';
     char paths[]={"smb://192.168.1.1/test+http://mysrv.com/Windows/+http://192.500.1.1/test+ftp://my.ru/m/n/k.txt"};
-    //input(&delim, paths);
+    //input(&delim);//, paths);
     int error= procces(delim,paths);;
 
 
