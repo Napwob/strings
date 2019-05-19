@@ -154,7 +154,7 @@ int procces(char delim,char* paths)
             stand++;
         }
     }
-    printf("%c",newpaths[stand-1]);
+    newpaths[stand-1]=' ';
     output(newpaths);
     return 0;
 }
