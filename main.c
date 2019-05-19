@@ -1,72 +1,113 @@
 #include <stdio.h>
+#include <stdlib.h>
 #define MAX_PATH 260
+#define DELIM "."
 
-unsigned int slen(const char *s) {
-    const char *sc = s;
-    while (*sc != '\0') {
-        ++sc;
-    }
-    return sc - s;
+int sstr(char *string1, char *string2)
+{
+	char *strptr = string1;
+	int j = 0,i;
+	for (i = 0; string1[i] != 0; i++) {
+		if (string2[j] == 0) {
+			return strptr;
+		}
+		if (string1[i] != string2[j]) {
+			j = 0;
+			continue;
+		}
+		if (string1[i] == string2[j]) {
+			if (j == 0) {
+				strptr = string1 + i;
+			}
+			j++;
+		}
+	}
+	if (string2[j] == 0) {
+		return 1;
+	} else {
+		return 0;
+	}
 }
 
-char *stok(char **s, const char *ct) {
-    char *sbegin = *s;
-    const char *sc1, *sc2;
+char* mystrchr(const char* s, const char c)
+{
+    while (*s && *s != c)
+        ++s;
+    return (*s) ? (char*)s : NULL;
+}
 
-    if (sbegin == NULL) {
+
+int slen(char *str)
+{
+	int count = 0,i;
+	for (i = 0; str[i] != '\0'; i++) {
+		count++;
+	}
+	return count++;
+}
+
+int sspn(char *str, const char *substr)
+{
+	int count = 0,i,j;
+	for (i = 0; str[i] != 0; i++) {
+		for (j = 0; substr[j]; j++) {
+			if (str[i] == substr[j]) {
+				count++;
+			}
+		}
+	}
+	return count;
+}
+
+int scmp(const char *str, const char *strc)
+{
+	int ncount = 0, pcount = 0,i;
+	for (i = 0; str[i] != 0; i++) {
+		if (str[i] < strc[i]) {
+			ncount++;
+		} else if (str[i] > strc[i]) {
+			pcount++;
+		}
+	}
+	if (ncount < pcount) {
+		return pcount;
+	} else if (ncount > pcount) {
+		return -ncount;
+	}
+	return 0;
+}
+
+char *scpy(char *des, const char *src)
+{
+	int i;
+	for (i = 0; src[i] != 0; i++) {
+		des[i] = src[i];
+	}
+	des[i] = 0;
+	return des;
+}
+
+char* stok(char* str, const char* delim)
+{
+    static char* next;
+
+    if (str) {
+        next = str;
+        while (*next && mystrchr(delim, *next))
+            *next++ = '\0';
+    }
+
+    if (!*next)
         return NULL;
-    }
 
-    for (sc1 = sbegin; *sc1 != '\0'; ++sc1) {
-        for (sc2 = ct; *sc2 != '\0'; ++sc2) {
-            if (*sc1 == *sc2) {
-                return (char *)sc1;
-            }
-        }
-    }
+    str = next;
 
-    return sbegin;
-}
+    while (*next && !mystrchr(delim, *next))
+        ++next;
+    while (*next && mystrchr(delim, *next))
+        *next++ = '\0';
 
-short int scmp(const char *cs, const char *ct) {
-    char c1, c2;
-
-    while (1) {
-        c1 = *cs++;
-        c2 = *ct++;
-        if (c1 != c2) {
-            return c1 < c2 ? -1 : 1;
-        }
-        if (!c1) {
-            break;
-        }
-    }
-    return 0;
-}
-
-unsigned int sspn(const char *string, const char *reject) {
-    const char *p;
-    const char *r;
-    unsigned int count = 0;
-
-    for (p = string; *p != '\0'; ++p) {
-        for (r = reject; *r != '\0'; ++r) {
-            if (*p == *r) {
-                return count;
-            }
-        }
-        ++count;
-    }
-    return count;
-}
-
-char *scpy(char *destination, const char *src) {
-    char *temp = destination;
-
-    while (*src != '\0') {
-        *destination++ = *src++;
-    }
-    return temp;
+    return str;
 }
 
 void input(char *delim, char *paths) {
@@ -78,114 +119,173 @@ void input(char *delim, char *paths) {
     fgets(temp, 2, stdin);
     fgets(paths, MAX_PATH * 4 + 4, stdin);
 }
-int check(char delim, char *paths, char *reject) {
-    const char *sc1, *sc2;
-    int pathNum = 1;
-    int letter = sspn(paths, reject);
-    int length = slen(paths);
 
-    if (delim != ' ' && delim != '+' && delim != ':') {
-        printf("incorect delimenator\n");
-        return 0;
-    }
-    if (letter != length) {
-        printf("wrong input in letter %d\n", letter);
-        return 0;
-    }
-
-    if (paths[0] != '/' && paths[0] != '~') {
-        printf("Wrong input in path: %d(letter %d =>\"%c\")\n", pathNum, letter,
-               paths[0]);
-        return 0;
-    }
-
-    letter = 1;
-
-    for (sc1 = paths; *sc1 != '\0'; ++sc1) {
-
-        if (*sc1 == delim) {
-            pathNum++;
-            if (*(sc1 + 1) != '/' && *(sc1 + 1) != '~') {
-                printf("Wrong input in path: %d(letter %d =>\"%c\")\n", pathNum,
-                       letter, *sc1);
-                return 0;
+int procces(char delim,char* paths)
+{
+    char piece[MAX_PATH]="";
+    char newpaths[MAX_PATH*4]="";
+    int ipi,ipa,i,j=0,en=0,oldipa=0,np=0;
+    while(1)
+    {
+        for(ipi=0,ipa=oldipa;(paths[ipa]!=delim);++ipi,++ipa)
+        {
+            piece[ipi] = paths[ipa];
+            if(paths[ipa]=='\0') en++;
+        }
+        oldipa=ipa+1;
+        if(check(piece) == 0)
+        {
+            printf("%s\n",piece);
+            int ns = (checkhs(piece));
+            for(i = ns,j;piece[i]!='\0'; ++i,++j)
+            {
+                newpaths[j]=piece[i];
             }
-        }
-
-        if (*sc1 == '.' && *(sc1 + 1) == '/' && *(sc1 - 1) != '.' &&
-            *(sc1 - 1) != '/') {
-            printf("Wrong input in path: %d(letter %d =>\"%c\")\n", pathNum,
-                   letter, *sc1);
-            return 0;
-        }
-
-        if (*sc1 == '/' && *(sc1 + 1) == '/') {
-            printf("Wrong input in path: %d(letter %d =>\"%c\")\n", pathNum,
-                   letter, *sc1);
-            return 0;
-        }
-
-        if (*sc1 == '.' && *(sc1 - 1) == '/' && *(sc1 - 2) == delim) {
-            printf("Wrong input in path: %d(letter %d =>\"%c\")\n", pathNum,
-                   letter, *sc1);
-            return 0;
-        }
-
-        if (*sc1 == '.' && *(sc1 - 1) != '.' && *(sc1 - 1) != '/') {
-            for (sc2 = sc1; *sc2 != '\0' && *sc2 != delim; ++sc2) {
-                if (*sc2 == '/') {
-                    printf("incorect folder name in path: %d(letter %d "
-                           "=>\"%c\")\n",
-                           pathNum, letter, *sc1);
-                    return 0;
-                }
+            for(np;newpaths[np]!='\0'; ++np)
+            {
+                    if(newpaths[np]=='/') newpaths[np]='\\';
             }
+
+            newpaths[np]=delim;
+            np++;
         }
-        letter++;
+
+        if(en>0) break;
+    }
+    output(newpaths);
+    return 0;
+}
+
+int check(char* paths)
+{
+    if(checksim(paths)==1)
+    {
+        return 1;
+    }
+    if(checkhs(paths)==1)
+    {
+        return 1;
+    }
+    if((checkip(paths)==0) || (checkdom(paths)==0))
+    {
+        return 1;
+    }
+    return 0;
+}
+
+int checkdom(char* paths)
+{
+    char a[]=".ru";
+    char a1[]=".com";
+    int i=0;
+    i=i+sstr(paths,a);
+    i=i+sstr(paths,a1);
+    if(i>0) return 0; else return 1;
+}
+
+int checksim(char *paths)
+{
+    int i,j;
+    char reject[6] = {'\\', '*', '?', '\"', '<', '>', '|'};
+    for(i=0;paths[i]!='\0';++i){
+        for(j=0;reject[j]!='\0';++j){
+            if(paths[i]==reject[j]) return 1;
+        }
+    }
+    return 0;
+}
+
+int checkhs(char *paths)
+{
+    int right=0;
+    int i;
+    char a[]="smb:";
+    char a1[]="http:";
+
+    for(i=0;paths[i]!='/';++i)
+    {
+        if(a[i]==paths[i]) right++;
+    }
+    if(right == 4) return right;
+    right = 0;
+
+    for(i=0;paths[i]!='/';++i)
+    {
+        if(a1[i]==paths[i]) right++;
+    }
+    if(right == 5) return right;
+    return 1;
+}
+
+int checkip(char* paths)
+{
+    char ip[20]="";
+    int ns = checkhs(paths)+2,i,j;
+    for(i=ns,j=0; paths[i]!='/';++i,++j)
+        ip[j]=paths[i];
+    return is_valid_ip(ip);
+}
+
+int valid_digit(char* ip_str)
+{
+    while (*ip_str) {
+        if (*ip_str >= '0' && *ip_str <= '9')
+            ++ip_str;
+        else
+            return 0;
     }
     return 1;
 }
-void process(char *paths) {
-    char *sc;
-    int i;
-    int count;
-    int arrSize = slen(paths);
-    int currSize = arrSize;
-    for (sc = paths; *sc != '\0'; ++sc) {
 
-        if (*sc == '.' && *(sc - 1) == '/' && *(sc + 1) == '/') {
-            scpy((sc - 1), (sc + 1));
-            paths[arrSize] = '\0';
-            paths[arrSize - 1] = '\0';
-            arrSize -= 2;
-        } else if (*sc == '.' && *(sc - 1) == '.' && *(sc + 1) == '/') {
-            sc -= 3;
-            count = 4;
-            currSize -= 4;
-            while (*sc != '/') {
-                --sc;
-                ++count;
-                --currSize;
-            }
-            scpy(sc, (sc + count));
-            for (i = currSize; i < arrSize; ++i) {
-                paths[i] = '\0';
-            }
-            arrSize = currSize;
+int is_valid_ip(char* ip_str)
+{
+    int num, dots = 0;
+    char* ptr;
+
+    if (ip_str == NULL)
+        return 1;
+
+
+    ptr = stok(ip_str, DELIM);
+
+    if (ptr == NULL)
+        return 1;
+
+    while (ptr) {
+
+        if (!valid_digit(ptr))
+            return 1;
+
+        num = atoi(ptr);
+
+        if (num >= 0 && num <= 255) {
+            /* parse remaining string */
+            ptr = stok(NULL, DELIM);
+            if (ptr != NULL)
+                ++dots;
         }
+        else
+            return 1;
     }
+
+    if (dots != 3)
+        return 1;
+    return 0;
 }
-void output(char *paths) { printf("new paths: %s\n", paths); }
+
+
+void output(char *paths)
+{
+    printf("new paths: %s\n", paths);
+}
 
 int main(int argc, char const *argv[]) {
-    char delim;
-    char paths[MAX_PATH * 4 + 4] = {'\0'};
-    input(&delim, paths);
-    char reject[10] = {'\\', ':', '*', '?', '\"', '<', '>', '|'};
-    if (check(delim, paths, reject)) {
-        process(paths);
-        output(paths);
-    }
+    //char *path = malloc(sizeof(char) * MAX_PATH*4);
+    char delim = '+';
+    char paths[]={"smb://192.168.1.1/test+http://mysrv.com/Windows/+http://192.500.1.1/test+ftp://my.ru/m/n/k.txt"};
+    //input(&delim, paths);
+    int error= procces(delim,paths);;
+
 
     return 0;
 }
