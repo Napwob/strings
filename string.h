@@ -10,5 +10,16 @@ int sspn(char *str, const char *substr);
 int scmp(const char *str, const char *strc);
 char *scpy(char *des, const char *src);
 char* stok(char* str, const char* delim);
+int is_valid_ip(char* ip_str);
+int valid_digit(char* ip_str);
+int checkip(char* paths);
+int checkhs(char *paths);
+int checksim(char *paths);
+int checkdom(char* paths);
+int check(char* paths);
+int procces(char delim,char* paths);
+void input(char *delim);
+void op(char *paths);
+
 
 #endif
