@@ -167,21 +167,15 @@ void procces(char delim,char* paths)
 
 int check(char* paths)
 {
-    int n;
-    n=csim(paths)
-    if(n==1)
+    if(csim(paths)==1)
     {
         return 1;
     }
-    n=chs(paths);
-    if(n==1)
+    if(chs(paths);==1)
     {
         return 1;
     }
-    int n1;
-	n1=cip(paths);
-	n=cdom(paths);
-    if((n1==1) && (n==1))
+    if((cip(paths)==1) && (cdom(paths)==1))
     {
         return 1;
     }
@@ -238,8 +232,7 @@ int cip(char* paths)
     int ns = chs(paths)+2,i,j,n;
     for(i=ns,j=0; paths[i]!='/';++i,++j)
         ip[j]=paths[i];
-	n=is_valid_ip(ip)
-    return n;
+    return is_valid_ip(ip);
 }
 
 int valid_digit(char* ip_str)
