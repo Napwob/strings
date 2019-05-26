@@ -16,6 +16,7 @@ int is_valid_ip(char* ip_str);
 int valid_digit(char* ip_str);
 void op(char *paths);
 int slen(char *str);
+int ati(char* s);
 int sspn(char *str, const char *substr);
 int scmp(const char *str, const char *strc);
 char *scpy(char *des, const char *src);

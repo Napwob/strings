@@ -4,6 +4,25 @@
 #define DELIM "."
 #define MAX_PATH 260
 
+void input(char *delim);
+char *sstr(char *string1, const char *string2);
+char* mystrchr(const char* s, const char c);
+int procces(char delim,char* paths);
+int check(char* paths);
+int chs(char *paths);
+int csim(char *paths);
+int cdom(char* paths);
+int cip(char* paths);
+int is_valid_ip(char* ip_str);
+int valid_digit(char* ip_str);
+void op(char *paths);
+int slen(char *str);
+int ati(char* s);
+int sspn(char *str, const char *substr);
+int scmp(const char *str, const char *strc);
+char *scpy(char *des, const char *src);
+char* stok(char* str, const char* delim);
+
 void op(char *paths)
 {
     printf("new paths: %s\n", paths);
@@ -246,6 +265,19 @@ int valid_digit(char* ip_str)
     return 1;
 }
 
+
+int ati(char* s)
+{
+    int n = 0;
+    while( *s >= '0' && *s <= '9' )
+    {
+        n *= 10;
+        n += *s++;
+        n -= '0';
+    }
+    return n;
+}
+
 int is_valid_ip(char* ip_str)
 {
     int num, dots = 0;
@@ -265,7 +297,7 @@ int is_valid_ip(char* ip_str)
         if (!valid_digit(ptr))
             return 1;
 
-        num = atoi(ptr);
+        num = ati(ptr);
 
         if (num >= 0 && num <= 255) {
             /* parse remaining string */
