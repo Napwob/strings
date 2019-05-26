@@ -143,7 +143,7 @@ int procces(char delim,char* paths)
         if(check(piece) == 0)
         {
             int ns=0;
-            ns = checkhs(piece);
+            ns = chs(piece);
 
             for(i=0,j=ns;piece[i]!='\0';++i,++j)
             {
@@ -229,7 +229,7 @@ int chs(char *paths)
 int cip(char* paths)
 {
     char ip[20]="";
-    int ns = checkhs(paths)+2,i,j;
+    int ns = chs(paths)+2,i,j;
     for(i=ns,j=0; paths[i]!='/';++i,++j)
         ip[j]=paths[i];
     return is_valid_ip(ip);
