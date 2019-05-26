@@ -167,22 +167,22 @@ int procces(char delim,char* paths)
 
 int check(char* paths)
 {
-    if(checksim(paths)==1)
+    if(csim(paths)==1)
     {
         return 1;
     }
-    if(checkhs(paths)==1)
+    if(chs(paths)==1)
     {
         return 1;
     }
-    if((checkip(paths)==1) && (checkdom(paths)==1))
+    if((cip(paths)==1) && (cdom(paths)==1))
     {
         return 1;
     }
     return 0;
 }
 
-int checkdom(char* paths)
+int cdom(char* paths)
 {
     char a[]=".ru";
     char a1[]=".com";
@@ -192,7 +192,7 @@ int checkdom(char* paths)
     if(i!=NULL) return 0; else return 1;
 }
 
-int checksim(char *paths)
+int csim(char *paths)
 {
     int i,j;
     char reject[7] = {'\\', '*', '?', '\"', '<', '>', '|'};
@@ -204,7 +204,7 @@ int checksim(char *paths)
     return 0;
 }
 
-int checkhs(char *paths)
+int chs(char *paths)
 {
     int right=0;
     int i;
@@ -226,7 +226,7 @@ int checkhs(char *paths)
     return 1;
 }
 
-int checkip(char* paths)
+int cip(char* paths)
 {
     char ip[20]="";
     int ns = checkhs(paths)+2,i,j;
