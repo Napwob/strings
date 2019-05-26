@@ -4,6 +4,7 @@
 #define DELIM "."
 #include <string.h>
 
+
 int main(int argc, char const *argv[]) {
     //char *paths = malloc(sizeof(char) * MAX_PATH*4);
     char delim='+';
