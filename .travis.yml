@@ -1,0 +1,10 @@
+dist: trusty
+sudo: required
+
+language: cpp
+compiler: gcc
+
+dist: xenial
+
+script: 
+    - git ls-files src/ | xargs clang-format -i && git diff --exit-code && make
