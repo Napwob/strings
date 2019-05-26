@@ -126,12 +126,12 @@ void input(char *delim){//, char *paths) {
     //fgets(paths, MAX_PATH * 4 + 4, stdin);
 }
 
-int procces(char delim,char* paths)
+void procces(char delim,char* paths)
 {
     char piece[MAX_PATH]="";
     char path[MAX_PATH]="";
     char newpaths[MAX_PATH*4]="";
-    int ipi,ipa,en=0,oldipa=0,i,j,stand=0;
+    int ipi,ipa,en=0,oldipa=0,i,j,stand=0,hj;
     while(en==0)
     {
         for(ipi=0,ipa=oldipa;(paths[ipa]!=delim);++ipi,++ipa)
@@ -140,7 +140,8 @@ int procces(char delim,char* paths)
             if(paths[ipa]=='\0') en++;
         }
         oldipa=ipa+1;
-        if(check(piece) == 0)
+	    hj=check(piece);
+        if(hj == 0)
         {
             int ns=0;
             ns = chs(piece);
@@ -162,20 +163,25 @@ int procces(char delim,char* paths)
     }
     newpaths[stand-1]=' ';
     op(newpaths);
-    return 0;
 }
 
 int check(char* paths)
 {
-    if(csim(paths)==1)
+    int n;
+    n=csim(paths)
+    if(n==1)
     {
         return 1;
     }
-    if(chs(paths)==1)
+    n=chs(paths);
+    if(n==1)
     {
         return 1;
     }
-    if((cip(paths)==1) && (cdom(paths)==1))
+    int n1;
+	n1=cip(paths);
+	n=cdom(paths);
+    if((n1==1) && (n==1))
     {
         return 1;
     }
@@ -229,10 +235,11 @@ int chs(char *paths)
 int cip(char* paths)
 {
     char ip[20]="";
-    int ns = chs(paths)+2,i,j;
+    int ns = chs(paths)+2,i,j,n;
     for(i=ns,j=0; paths[i]!='/';++i,++j)
         ip[j]=paths[i];
-    return is_valid_ip(ip);
+	n=is_valid_ip(ip)
+    return n;
 }
 
 int valid_digit(char* ip_str)
