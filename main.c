@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #define MAX_PATH 260
 #define DELIM "."
-#include <string.h>
+#include "string.h"
 
 
 int main(int argc, char const *argv[]) {
